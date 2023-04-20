@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  sql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: home
+      MYSQL_USER: hello
+      MYSQL_PASSWORD: root
+    restart: always
+    networks:
+      - wordpress-network
+    volumes:
+      - db_data:/var/lib/mysql
+  wordpress:
+    restart: always
+    depends_on: 
+    - sql 
+    image: wordpress
+    ports:
+      - 8088:80
+    networks:
+      - wordpress-network
+    volumes:
+      - wp_data:/var/www/html
+
+networks:
+  wordpress-network:
+    driver: bridge 
+
+
+
+volumes:
+  db_data:
+  wp_data:
